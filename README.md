@@ -1,4 +1,4 @@
-# codedcek.com
+# codecek.com
 
 Personal portfolio website for Chisom Kalu — Junior Software Developer based in Newcastle.
 
