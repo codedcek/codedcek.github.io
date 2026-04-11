@@ -410,7 +410,7 @@ section { padding: 6rem 4rem; position: relative; }
 #projects { background: var(--black); }
 
 .projects-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; }
-.projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-top: 0; }
 
 .project-card { background: var(--surface); padding: 2rem; position: relative; overflow: hidden; transition: background 0.3s; cursor: none; }
 .project-card:hover { background: #121212; }
@@ -522,8 +522,9 @@ footer { padding: 1.75rem 4rem; border-top: 1px solid var(--border); display: fl
 .footer-copy { font-size: 0.7rem; color: var(--muted2); font-family: 'JetBrains Mono', monospace; }
 
 /* ── Reveal ── */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal { opacity: 1; transform: translateY(0); transition: opacity 0.65s ease, transform 0.65s ease; }
+.js-loaded .reveal { opacity: 0; transform: translateY(24px); }
+.js-loaded .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
@@ -1056,11 +1057,15 @@ document.querySelectorAll('a, button').forEach(el => {
 });
 
 // ── Scroll reveal ──
+document.body.classList.add('js-loaded');
 const observer = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
-    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 70);
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      observer.unobserve(e.target);
+    }
   });
-}, { threshold: 0.08 });
+}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // ── Typing terminal ──
