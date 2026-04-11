@@ -458,7 +458,7 @@ section { padding: 6rem 4rem; position: relative; }
 }
 .code-bar { background: #111; padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.4rem; }
 .code-bar span { color: var(--muted2); font-size: 0.62rem; margin-left: auto; }
-.code-body { padding: 1rem 1.25rem; line-height: 1.85; color: #888; }
+.code-body { padding: 1rem 1.25rem; line-height: 1.85; color: #888; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; white-space: pre; overflow-x: auto; margin: 0; }
 .code-body .ck  { color: #c792ea; }
 .code-body .cs  { color: #c3e88d; }
 .code-body .cf  { color: var(--orange); }
@@ -676,25 +676,26 @@ footer { padding: 1.75rem 4rem; border-top: 1px solid var(--border); display: fl
             <div class="dot dot-g"></div>
             <span>scanner.py</span>
           </div>
-          <div class="code-body">
-<span class="cc"># BSCAN — AI-powered site audit</span><br>
-<span class="ck">@router</span>.<span class="cf">post</span>(<span class="cs">"/scan"</span>)<br>
-<span class="ck">async def</span> <span class="cf">run_scan</span>(url: <span class="cv">str</span>, user = <span class="cf">Depends</span>(auth)):<br>
-&nbsp;&nbsp;<span class="cc"># validate + enforce plan limits</span><br>
-&nbsp;&nbsp;<span class="cf">check_quota</span>(user.plan, user.scans_today)<br>
-&nbsp;&nbsp;<span class="cv">result</span> = <span class="ck">await</span> <span class="cf">deep_crawl</span>(url)<br>
-&nbsp;&nbsp;<span class="cv">issues</span> = <span class="cf">audit_all</span>(result)<br>
-<br>
-&nbsp;&nbsp;<span class="cc"># AI fix generation</span><br>
-&nbsp;&nbsp;<span class="cv">fixes</span> = <span class="ck">await</span> <span class="cf">ai_generate_fixes</span>(issues)<br>
-<br>
-&nbsp;&nbsp;<span class="cc"># queue PDF + alerts async</span><br>
-&nbsp;&nbsp;<span class="cf">generate_pdf</span>.<span class="cf">delay</span>(result.id)<br>
-&nbsp;&nbsp;<span class="cf">check_alerts</span>.<span class="cf">delay</span>(user.id, issues)<br>
-<br>
-&nbsp;&nbsp;<span class="ck">return</span> {<span class="cs">"score"</span>: result.score,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">"issues"</span>: issues, <span class="cs">"fixes"</span>: fixes}
-          </div>
+          <pre class="code-body"><span class="cc"># BSCAN — AI-powered site audit</span>
+
+<span class="ck">@router</span>.<span class="cf">post</span>(<span class="cs">"/scan"</span>)
+<span class="ck">async def</span> <span class="cf">run_scan</span>(url: <span class="cv">str</span>,
+                    user = <span class="cf">Depends</span>(auth)):
+  <span class="cc"># enforce plan limits</span>
+  <span class="cf">check_quota</span>(user.plan, user.scans_today)
+  result = <span class="ck">await</span> <span class="cf">deep_crawl</span>(url)
+  issues = <span class="cf">audit_all</span>(result)
+
+  <span class="cc"># AI fix generation</span>
+  fixes = <span class="ck">await</span> <span class="cf">ai_generate_fixes</span>(issues)
+
+  <span class="cc"># queue PDF + alerts async</span>
+  <span class="cf">generate_pdf</span>.<span class="cf">delay</span>(result.id)
+  <span class="cf">check_alerts</span>.<span class="cf">delay</span>(user.id, issues)
+
+  <span class="ck">return</span> {<span class="cs">"score"</span>: result.score,
+          <span class="cs">"issues"</span>: issues,
+          <span class="cs">"fixes"</span>: fixes}</pre>
         </div>
 
         <div class="code-mockup" style="margin-top:0.75rem;">
@@ -704,21 +705,19 @@ footer { padding: 1.75rem 4rem; border-top: 1px solid var(--border); display: fl
             <div class="dot dot-g"></div>
             <span>billing.py — dual market</span>
           </div>
-          <div class="code-body">
-<span class="cc"># Two independent subscription tiers</span><br>
-<span class="cc"># UI: scan limits via JWT + user.plan</span><br>
-<span class="cc"># API: credit limits via X-API-Key</span><br>
-<br>
-PLANS = {<br>
-&nbsp;&nbsp;<span class="cs">"starter"</span>:  {<span class="cs">"scans"</span>: <span class="cn">50</span>},<br>
-&nbsp;&nbsp;<span class="cs">"pro"</span>:      {<span class="cs">"scans"</span>: <span class="cn">500</span>},<br>
-&nbsp;&nbsp;<span class="cs">"agency"</span>:   {<span class="cs">"scans"</span>: <span class="cn">2000</span>},<br>
-}<br>
-API_PLANS = {<br>
-&nbsp;&nbsp;<span class="cs">"developer"</span>: {<span class="cs">"credits"</span>: <span class="cn">10000</span>},<br>
-&nbsp;&nbsp;<span class="cs">"business"</span>:  {<span class="cs">"credits"</span>: <span class="cn">100000</span>},<br>
+          <pre class="code-body"><span class="cc"># Two independent subscription tiers</span>
+<span class="cc"># UI: scan limits via JWT + user.plan</span>
+<span class="cc"># API: credit limits via X-API-Key</span>
+
+PLANS = {
+  <span class="cs">"starter"</span>:  {<span class="cs">"scans"</span>: <span class="cn">50</span>},
+  <span class="cs">"pro"</span>:      {<span class="cs">"scans"</span>: <span class="cn">500</span>},
+  <span class="cs">"agency"</span>:   {<span class="cs">"scans"</span>: <span class="cn">2000</span>},
 }
-          </div>
+API_PLANS = {
+  <span class="cs">"developer"</span>: {<span class="cs">"credits"</span>: <span class="cn">10000</span>},
+  <span class="cs">"business"</span>:  {<span class="cs">"credits"</span>: <span class="cn">100000</span>},
+}</pre>
         </div>
       </div>
     </div>
