@@ -1,5 +1,12 @@
 # codecek.com
 
-Personal portfolio website for Chisom Kalu — Junior Software Developer based in Newcastle.
+Portfolio of Chisom Kalu — Software Developer & Founder based in Newcastle, UK.
 
-Built with HTML, CSS and JavaScript. Hosted on GitHub Pages at [codecek.com](https://codecek.com).
+Building BSCAN (website audit SaaS) and Wisers (professional social network).
+Open to contracts, placement years and graduate developer roles.
+
+**Stack:** Python · FastAPI · PostgreSQL · Redis · SvelteKit · Docker · Stripe · Cloudflare
+
+🌐 codecek.com
+📧 chisomcodes@gmail.com
+🔗 linkedin.com/in/chisom-k-192749252
