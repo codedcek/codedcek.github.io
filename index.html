@@ -522,9 +522,9 @@ footer { padding: 1.75rem 4rem; border-top: 1px solid var(--border); display: fl
 .footer-copy { font-size: 0.7rem; color: var(--muted2); font-family: 'JetBrains Mono', monospace; }
 
 /* ── Reveal ── */
-.reveal { opacity: 1; transform: translateY(0); transition: opacity 0.65s ease, transform 0.65s ease; }
-.js-loaded .reveal { opacity: 0; transform: translateY(24px); }
-.js-loaded .reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal { transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.hidden { opacity: 0; transform: translateY(24px); }
+.reveal.visible { opacity: 1 !important; transform: translateY(0) !important; }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
@@ -1057,16 +1057,27 @@ document.querySelectorAll('a, button').forEach(el => {
 });
 
 // ── Scroll reveal ──
-document.body.classList.add('js-loaded');
+// Mark elements below fold as hidden, above fold stay visible
+document.querySelectorAll('.reveal').forEach(el => {
+  const rect = el.getBoundingClientRect();
+  if (rect.top > window.innerHeight) {
+    el.classList.add('hidden');
+  } else {
+    el.classList.add('visible');
+  }
+});
+
 const observer = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
+  entries.forEach(e => {
     if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      e.target.classList.remove('hidden');
+      e.target.classList.add('visible');
       observer.unobserve(e.target);
     }
   });
-}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}, { threshold: 0, rootMargin: '0px 0px -20px 0px' });
+
+document.querySelectorAll('.reveal.hidden').forEach(el => observer.observe(el));
 
 // ── Typing terminal ──
 const output = document.getElementById('typeOutput');
